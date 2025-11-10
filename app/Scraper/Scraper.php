@@ -39,7 +39,7 @@ function get_info($get_parameter): array|null
         }
         return $return_array;
     } else {
-        echo "There is no such currency or city as $get_parameter!";
+        echo "There is no such currency as $get_parameter!";
         return null;
     }
 }
