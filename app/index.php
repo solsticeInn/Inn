@@ -7,12 +7,7 @@
         include $class_path;
     }); 
 
-    echo 'hello docked world <br>';
-
     $test_object = new src\Test();
-
-    echo '<br>';
-
 
 
     $connection_string = 'pgsql:host=db;port=5432;dbname=database';
@@ -21,7 +16,9 @@
 
     try {
         $pdo = new PDO($connection_string, $user, $password);
-        echo 'Succeeded<br>';
+//        echo 'Succeeded<br>';
     } catch (PDOException $e) {
         echo 'Failed: ' . $e->getMessage() . '.<br>';
     }
+
+    require_once "Scraper/Scraper.php";

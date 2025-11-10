@@ -14,16 +14,16 @@ public function __construct()
 {
     $this->id = '2003';
     self::$count++;
-    echo "Object {$this->id} created. Exist: " . self::$count . '.<br>';
+//    echo "Object {$this->id} created. Exist: " . self::$count . '.<br>';
 }
 
 public function __destruct()
 {
     self::$count--;
-    echo 'Destroyed. Left: ' . self::$count . '.<br>';
+//    echo 'Destroyed. Left: ' . self::$count . '.<br>';
 }
 
-    public function hello(){
+public function hello(){
     echo 'hello!';
 }
 }

@@ -7,6 +7,8 @@
         }
     },
     "require": {
+        "ext-dom": "*s",
+        "ext-curl": "*",
         "ext-pdo": "*"
     }
 }
