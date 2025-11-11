@@ -42,7 +42,7 @@ function get_info($get_parameter): array
     }
     return $return_array;
 }
-
+//test
 try {
     if (isset($_GET['currency']) || isset($_GET['json'])) {
 
