@@ -1,24 +1,22 @@
-    <?php
-//    require 'vendor/autoload.php';
-//    use Inn\App;
+<?php
+require 'vendor/autoload.php';
+use Inn\App;
 
-    spl_autoload_register(function ($class_name) {
-        $class_path = __DIR__ . "/" . str_replace('\\', '/',$class_name) . '.php';
-        include $class_path;
-    }); 
+//    const BASE_PATH = __DIR__.'/../';
+//    echo BASE_PATH . '<br><br><br><br>';
 
-    $test_object = new src\Test();
+//    Own-written class autoloader
+//    spl_autoload_register(function ($class_name) {
+//        $class_path = __DIR__ . "/" . str_replace('\\', '/',$class_name) . '.php';
+//        include $class_path;
+//    });
 
+$router = new App\Router();
 
-    $connection_string = 'pgsql:host=db;port=5432;dbname=database';
-    $user = 'user';
-    $password = 'pasw';
+$load_routes = require __DIR__ . '/public/routes.php';
+$load_routes($router);
 
-    try {
-        $pdo = new PDO($connection_string, $user, $password);
-//        echo 'Succeeded<br>';
-    } catch (PDOException $e) {
-        echo 'Failed: ' . $e->getMessage() . '.<br>';
-    }
+$uri = parse_url($_SERVER['REQUEST_URI'])['path'];
+$method = $_SERVER['REQUEST_METHOD'];
 
-    require_once "Scraper/Scraper.php";
+$router->route($uri, $method);
