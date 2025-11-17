@@ -1,6 +1,6 @@
 <?php
 
-namespace Inn\App;
+namespace Inn\App\Routing;
 
 class Router
 {
@@ -9,10 +9,9 @@ class Router
 
     public function add($uri, $controller, $method)
     {
-        $this->routes[] = [
-            'uri' => $uri,
-            'controller' => $controller,
-            'method' => $method
+        $this->routes[$uri] = [
+                'controller' => $controller,
+                'method' => $method
         ];
     }
 
@@ -43,9 +42,10 @@ class Router
 
     public function route($uri, $method)
     {
-        foreach ($this->routes as $route) {
-            if ($uri === $route['uri'] && $route['method'] === strtoupper($method)) {
-                return require 'public/controllers/'  . $route['controller'];
+        if (isset($this->routes[$uri])) {
+            $route = $this->routes[$uri];
+            if ($route['method'] === strtoupper($method)) {
+                return require 'src/Controllers/'  . $route['controller'];
             }
         }
         $this->abort();

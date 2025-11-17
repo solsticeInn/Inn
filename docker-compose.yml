@@ -15,19 +15,18 @@
         - pgdata-volume:/var/lib/postgresql/data
       image: postgres
       env_file:
-        - envFiles/postgre.env
+        - postgre.env
       ports:
-        - "5432:5432"
+        - "${POSTGRESQL_HOST_PORT}:5432"
       networks:
         - single-net
     nginx:
+      image: nginx
       volumes:
         - ./nginx/nginx.conf:/etc/nginx/conf.d/default.conf
         - ./app:/var/www/html
-      build:
-        dockerfile: nginx.Dockerfile
       ports:
-        - "80:80"
+        - "${NGINX_HOST_PORT}:80"
       depends_on:
         - php
       networks:
