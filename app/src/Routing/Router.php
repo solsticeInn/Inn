@@ -5,14 +5,16 @@ namespace Inn\App\Routing;
 class Router
 {
 
-    protected $routes = [];
+    protected RouteStorage $route;
+
+    public function __construct(RouteStorage $route)
+    {
+        $this->route = $route;
+    }
 
     public function add($uri, $controller, $method)
     {
-        $this->routes[$uri] = [
-                'controller' => $controller,
-                'method' => $method
-        ];
+        $this->route->addRoute($uri, $controller, $method);
     }
 
     public function post($uri, $controller)
@@ -42,11 +44,9 @@ class Router
 
     public function route($uri, $method)
     {
-        if (isset($this->routes[$uri])) {
-            $route = $this->routes[$uri];
-            if ($route['method'] === strtoupper($method)) {
-                return require 'src/Controllers/'  . $route['controller'];
-            }
+        $controller = $this->route->getRoute($uri, $method);
+        if (isset($controller)){
+            return require $controller;
         }
         $this->abort();
     }

@@ -3,7 +3,9 @@ require 'vendor/autoload.php';
 
 use Inn\App;
 
-$router = new App\Routing\Router();
+$route = new App\Routing\RouteStorage();
+
+$router = new App\Routing\Router($route);
 
 $routes = require __DIR__ . '/src/Routing/routes.php';
 
