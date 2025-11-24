@@ -6,15 +6,45 @@ namespace Composer\Autoload;
 
 class ComposerStaticInitd0b72bfb582c27ea100fe1955d7098ac
 {
+    public static $files = array (
+        '6e3fae29631ef280660b3cdad06f25a8' => __DIR__ . '/..' . '/symfony/deprecation-contracts/function.php',
+    );
+
     public static $prefixLengthsPsr4 = array (
-        'I' => 
+        'S' =>
+        array (
+            'Symfony\\Contracts\\Service\\' => 26,
+            'Symfony\\Component\\VarExporter\\' => 30,
+            'Symfony\\Component\\DependencyInjection\\' => 38,
+        ),
+        'P' =>
+        array (
+            'Psr\\Container\\' => 14,
+        ),
+        'I' =>
         array (
             'Inn\\App\\' => 8,
         ),
     );
 
     public static $prefixDirsPsr4 = array (
-        'Inn\\App\\' => 
+        'Symfony\\Contracts\\Service\\' =>
+        array (
+            0 => __DIR__ . '/..' . '/symfony/service-contracts',
+        ),
+        'Symfony\\Component\\VarExporter\\' =>
+        array (
+            0 => __DIR__ . '/..' . '/symfony/var-exporter',
+        ),
+        'Symfony\\Component\\DependencyInjection\\' =>
+        array (
+            0 => __DIR__ . '/..' . '/symfony/dependency-injection',
+        ),
+        'Psr\\Container\\' =>
+        array (
+            0 => __DIR__ . '/..' . '/psr/container/src',
+        ),
+        'Inn\\App\\' =>
         array (
             0 => __DIR__ . '/../..' . '/src',
         ),

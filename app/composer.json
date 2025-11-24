@@ -7,8 +7,7 @@
         }
     },
     "require": {
-        "ext-dom": "*s",
-        "ext-curl": "*",
-        "ext-pdo": "*"
+        "ext-pdo": "*",
+        "symfony/dependency-injection" : "^6.0"
     }
 }
