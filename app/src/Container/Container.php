@@ -10,6 +10,12 @@ use ReflectionClass;
 class Container
 {
     protected array $instances = [];
+    protected array $parameters = [];
+
+    public function addParameter(string $name, $value): void
+    {
+        $this->parameters[$name] = $value;
+    }
 
     public function get(string $className): object
     {
@@ -38,9 +44,20 @@ class Container
 
             if ($parameterType && !$parameterType->isBuiltin()) {
                 $dependencies[] = $this->get($parameterType->getName());
-            } else {
-                throw new Exception("Unresolved situation with parameter: " . $parameter->getName());
+                continue;
             }
+
+            if (array_key_exists($parameter->getName(), $this->parameters)) {
+                $dependencies[] = $this->parameters[$parameter->getName()];
+                continue;
+            }
+
+            if ($parameter->isDefaultValueAvailable()) {
+                $dependencies[] = $parameter->getDefaultValue();
+                continue;
+            }
+
+            throw new Exception("Unresolved situation with parameter: " . $parameter->getName());
         }
 
         $object = $reflector->newInstanceArgs($dependencies);

@@ -8,9 +8,11 @@ class Router
 {
     public RouteStorage $route;
 
-    public function __construct(RouteStorage $route)
+    public function __construct(RouteStorage $route, string $greetsFromRouter)
     {
         $this->route = $route;
+
+        echo $greetsFromRouter . '<br>';
     }
 
     public function add(string $uri, string $controller, string $method): void

@@ -10,6 +10,7 @@ use Inn\App\Container\Container;
 $container = new Container();
 
 try {
+    $container->addParameter('greetsFromRouter', 'Greets!');
     $router = $container->get(Router::class);
 
     $routes = require __DIR__ . '/src/Routing/routes.php';
