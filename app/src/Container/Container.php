@@ -19,7 +19,7 @@ class Container
 
     public function get(string $className): object
     {
-        if (isset($this->instances[$className])) {
+        if ($this->has($className)) {
             return $this->instances[$className];
         }
 
@@ -64,5 +64,10 @@ class Container
         $this->instances[$className] = $object;
 
         return $object;
+    }
+
+    public function has(string $dependency): bool
+    {
+        return isset($this->instances[$dependency]);
     }
 }

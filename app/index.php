@@ -5,20 +5,26 @@ declare(strict_types=1);
 require 'vendor/autoload.php';
 
 use Inn\App\Routing\Router;
+use Inn\App\Routing\RouteRegistrar;
 use Inn\App\Container\Container;
+use Inn\App\Routing\RequestHandler;
 
 $container = new Container();
 
 try {
     $container->addParameter('greetsFromRouter', 'Greets!');
+
     $router = $container->get(Router::class);
+    $registrar = $container->get(RouteRegistrar::class);
+    $handler = $container->get(RequestHandler::class);
 
-    $routes = require __DIR__ . '/src/Routing/routes.php';
+    $controllers = [
+        \Inn\App\Controllers\HomeController::class,
+    ];
 
-    $uri = parse_url($_SERVER['REQUEST_URI'])['path'];
-    $method = $_SERVER['REQUEST_METHOD'];
+    $registrar->registerControllers($controllers);
 
-    $router->route($uri, $method);
+    $handler->handleRequest();
 } catch (Exception $e) {
-    echo "Error in the container : " . $e->getMessage();
+    echo "Error while building container: " . $e->getMessage();
 }

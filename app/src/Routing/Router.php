@@ -12,48 +12,48 @@ class Router
     {
         $this->route = $route;
 
-        echo $greetsFromRouter . '<br>';
+//        echo $greetsFromRouter . '<br>';
     }
 
-    public function add(string $uri, string $controller, string $method): void
+    public function add(string $uri, callable|array $controller, string $method): void
     {
-        $this->route->addRoute($uri,  $controller, $method);
+        $this->route->addRoute($uri, $controller, $method);
     }
 
-    public function post(string $uri, string $controller): void
+    public function post(string $uri, callable|array $controller): void
     {
         $this->add($uri, $controller, 'POST');
     }
 
-    public function get(string $uri, string $controller): void
+    public function get(string $uri, callable|array $controller): void
     {
         $this->add($uri, $controller, 'GET');
     }
 
-    public function patch(string $uri, string $controller): void
+    public function patch(string $uri, callable|array $controller): void
     {
         $this->add($uri, $controller, 'PATCH');
     }
 
-    public function put(string $uri, string $controller): void
+    public function put(string $uri, callable|array $controller): void
     {
         $this->add($uri, $controller, 'PUT');
     }
 
-    public function delete(string $uri, string $controller): void
+    public function delete(string $uri, callable|array $controller): void
     {
         $this->add($uri, $controller, 'DELETE');
     }
 
-    public function route(string $uri, string $method)
+    public function route(string $uri, string $method): string
     {
         $controller = $this->route->getRoute($uri, $method);
 
-        if (isset($controller)) {
-            return require $controller;
+        if (!$controller) {
+            $this->abort();
         }
 
-        $this->abort();
+        return $controller;
     }
 
     protected function abort($code = 404): void
