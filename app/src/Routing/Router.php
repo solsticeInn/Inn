@@ -4,15 +4,20 @@ declare(strict_types=1);
 
 namespace Inn\App\Routing;
 
+use Inn\App\Attributes\Env;
+
 class Router
 {
+
+    #[Env('ROUTER_PROPERTY', default: 'Message-property')]
+    public string $greetsProperty;
     public RouteStorage $route;
 
-    public function __construct(RouteStorage $route, string $greetsFromRouter)
+    public function __construct(RouteStorage $route, #[Env('ROUTER_GREETINGS', default: 'Hello, this message is from env.')] string $greetsFromRouter)
     {
         $this->route = $route;
 
-//        echo $greetsFromRouter . '<br>';
+        echo $greetsFromRouter . '<br>';
     }
 
     public function add(string $uri, callable|array $controller, string $method): void

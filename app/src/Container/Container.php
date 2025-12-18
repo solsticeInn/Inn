@@ -6,16 +6,12 @@ namespace Inn\App\Container;
 
 use Exception;
 use ReflectionClass;
+use Inn\App\Attributes\Env;
 
 class Container
 {
     protected array $instances = [];
     protected array $parameters = [];
-
-    public function addParameter(string $name, $value): void
-    {
-        $this->parameters[$name] = $value;
-    }
 
     public function get(string $className): object
     {
@@ -40,6 +36,24 @@ class Container
         $dependencies = [];
 
         foreach ($constructor->getParameters() as $parameter) {
+            $envAttributes = $parameter->getAttributes(Env::class);
+
+            if (!empty($envAttributes)) {
+                $envInstance = $envAttributes[0]->newInstance();
+
+                $envValue =  $_ENV[$envInstance->key] ?? getenv($envInstance->key);
+
+                var_dump($envValue);
+
+                if ($envValue !== false && isset($envValue)) {
+                    $dependencies[] = $envValue;
+                } else {
+                    $dependencies[] = $envInstance->default;
+                }
+
+                continue;
+            }
+
             $parameterType = $parameter->getType();
 
             if ($parameterType && !$parameterType->isBuiltin()) {
@@ -62,6 +76,26 @@ class Container
 
         $object = $reflector->newInstanceArgs($dependencies);
         $this->instances[$className] = $object;
+
+        foreach ($reflector->getProperties() as $property) {
+            $envAttributes = $property->getAttributes(Env::class);
+
+            if (!empty($envAttributes)) {
+                $envInstance = $envAttributes[0]->newInstance();
+
+                $envValue =  $_ENV[$envInstance->key] ?? getenv($envInstance->key);
+
+                if ($envValue === false || $envValue === null) {
+                    $envValue = $envInstance->default;
+                }
+
+                if (!$property->isPublic()) {
+                    $property->setAccessible(true);
+                }
+
+                $property->setValue($object, $envValue);
+            }
+        }
 
         return $object;
     }

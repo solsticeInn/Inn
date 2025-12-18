@@ -8,23 +8,23 @@ use Inn\App\Routing\Router;
 use Inn\App\Routing\RouteRegistrar;
 use Inn\App\Container\Container;
 use Inn\App\Routing\RequestHandler;
+use Dotenv\Dotenv;
+
+$dotenv = Dotenv::createImmutable(__DIR__);
+$dotenv->load();
 
 $container = new Container();
 
 try {
-    $container->addParameter('greetsFromRouter', 'Greets!');
-
     $router = $container->get(Router::class);
     $registrar = $container->get(RouteRegistrar::class);
     $handler = $container->get(RequestHandler::class);
 
-    $controllers = [
-        \Inn\App\Controllers\HomeController::class,
-    ];
-
-    $registrar->registerControllers($controllers);
+    $registrar->registerControllers();
 
     $handler->handleRequest();
 } catch (Exception $e) {
-    echo "Error while building container: " . $e->getMessage();
+    echo "Error while building container: " . $e->getMessage() . "\n";
+    echo "in file: " . $e->getFile() . "\n";
+    echo "on line: " . $e->getLine() . "\n";
 }

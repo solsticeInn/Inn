@@ -8,15 +8,53 @@ use Inn\App\Attributes\Route;
 class RouteRegistrar
 {
     protected Router $router;
+    protected array $controllers = [];
     public function __construct(Router $router)
     {
         $this->router = $router;
     }
 
-    public function registerControllers(array $controllers): void
+    public function registerControllers(): void
     {
-        foreach ($controllers as $controller) {
+        $this->prepareFolderScanning();
+
+        foreach ($this->controllers as $controller) {
             $this->registerController($controller);
+        }
+    }
+
+    protected function prepareFolderScanning(): void
+    {
+        $rootNamespace = "Inn\\App\\Controllers\\";
+
+        $pattern = __DIR__ . "/../Controllers/";
+
+        $folderElements = scandir($pattern);
+
+        $this->collectControllers($folderElements, $pattern, $rootNamespace);
+
+    }
+
+    protected function collectControllers(array $folderElements, string $pattern, string $namespace): void
+    {
+        foreach ($folderElements as $folderElement) {
+            if ($folderElement === '.' || $folderElement === '..') {
+                continue;
+            }
+
+            $folderElementPath = $pattern . $folderElement;
+
+            if (is_file($folderElementPath)) {
+                $this->controllers[] = $namespace . basename($folderElement, '.php');
+            }
+
+            if (is_dir($folderElementPath)) {
+                $namespaceElement = $namespace . $folderElement  . "\\";
+
+                $folderElements = scandir($folderElementPath . '/');
+
+                $this->collectControllers($folderElements, $folderElementPath . '/', $namespaceElement);
+            }
         }
     }
 

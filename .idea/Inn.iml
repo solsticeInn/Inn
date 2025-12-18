@@ -10,6 +10,12 @@
       <excludeFolder url="file://$MODULE_DIR$/app/vendor/symfony/deprecation-contracts" />
       <excludeFolder url="file://$MODULE_DIR$/app/vendor/symfony/service-contracts" />
       <excludeFolder url="file://$MODULE_DIR$/app/vendor/symfony/var-exporter" />
+      <excludeFolder url="file://$MODULE_DIR$/app/vendor/graham-campbell/result-type" />
+      <excludeFolder url="file://$MODULE_DIR$/app/vendor/phpoption/phpoption" />
+      <excludeFolder url="file://$MODULE_DIR$/app/vendor/symfony/polyfill-ctype" />
+      <excludeFolder url="file://$MODULE_DIR$/app/vendor/symfony/polyfill-mbstring" />
+      <excludeFolder url="file://$MODULE_DIR$/app/vendor/symfony/polyfill-php80" />
+      <excludeFolder url="file://$MODULE_DIR$/app/vendor/vlucas/phpdotenv" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
