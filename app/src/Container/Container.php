@@ -6,6 +6,8 @@ namespace Inn\App\Container;
 
 use Exception;
 use ReflectionClass;
+use ReflectionNamedType;
+use ReflectionType;
 use Inn\App\Attributes\Env;
 
 class Container
@@ -38,23 +40,21 @@ class Container
         foreach ($constructor->getParameters() as $parameter) {
             $envAttributes = $parameter->getAttributes(Env::class);
 
+            $parameterType = $parameter->getType();
+
             if (!empty($envAttributes)) {
                 $envInstance = $envAttributes[0]->newInstance();
 
                 $envValue =  $_ENV[$envInstance->key] ?? getenv($envInstance->key);
 
-                var_dump($envValue);
-
                 if ($envValue !== false && isset($envValue)) {
-                    $dependencies[] = $envValue;
+                    $dependencies[] = $this->castType($envValue, $parameterType);
                 } else {
-                    $dependencies[] = $envInstance->default;
+                    $dependencies[] = $this->castType($envInstance->default, $parameterType);
                 }
 
                 continue;
             }
-
-            $parameterType = $parameter->getType();
 
             if ($parameterType && !$parameterType->isBuiltin()) {
                 $dependencies[] = $this->get($parameterType->getName());
@@ -89,11 +89,9 @@ class Container
                     $envValue = $envInstance->default;
                 }
 
-                if (!$property->isPublic()) {
-                    $property->setAccessible(true);
-                }
+                $castedEnvValue = $this->castType($envValue, $property->getType());
 
-                $property->setValue($object, $envValue);
+                $property->setValue($object, $castedEnvValue);
             }
         }
 
@@ -103,5 +101,20 @@ class Container
     public function has(string $dependency): bool
     {
         return isset($this->instances[$dependency]);
+    }
+
+    private function castType(mixed $value, ?ReflectionType $type): mixed
+    {
+        if (!($type instanceof ReflectionNamedType) || !$type->isBuiltin()) {
+            return $value;
+        }
+
+        return match ($type->getName()) {
+            'int' => (int) $value,
+            'float' => (float) $value,
+            'bool' => filter_var($value, FILTER_VALIDATE_BOOL),
+            'string' => (string) $value,
+            default => $value,
+        };
     }
 }

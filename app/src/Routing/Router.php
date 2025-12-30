@@ -13,7 +13,7 @@ class Router
     public string $greetsProperty;
     public RouteStorage $route;
 
-    public function __construct(RouteStorage $route, #[Env('ROUTER_GREETINGS', default: 'Hello, this message is from env.')] string $greetsFromRouter)
+    public function __construct(RouteStorage $route, #[Env('ROUTER_NUMBER', default: 'Hello, this message is from env.')] int $greetsFromRouter)
     {
         $this->route = $route;
 
