@@ -25,6 +25,7 @@ class ComposerStaticInitd0b72bfb582c27ea100fe1955d7098ac
         ),
         'P' =>
         array (
+            'Psr\\Log\\' => 8,
             'Psr\\Container\\' => 14,
             'PhpOption\\' => 10,
         ),
@@ -66,6 +67,10 @@ class ComposerStaticInitd0b72bfb582c27ea100fe1955d7098ac
         'Symfony\\Component\\DependencyInjection\\' =>
         array (
             0 => __DIR__ . '/..' . '/symfony/dependency-injection',
+        ),
+        'Psr\\Log\\' =>
+        array (
+            0 => __DIR__ . '/..' . '/psr/log/src',
         ),
         'Psr\\Container\\' =>
         array (
