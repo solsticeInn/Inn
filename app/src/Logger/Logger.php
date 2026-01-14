@@ -10,7 +10,7 @@ use ReflectionClass;
 class Logger implements LoggerInterface
 {
     public function __construct(
-        private string $logFilePath = '/var/www/html/src/Logger/app.log'
+        private readonly string $logFilePath = '/var/www/html/src/Logger/app.log'
     ){
         $dirName = dirname($this->logFilePath);
 
@@ -72,7 +72,6 @@ class Logger implements LoggerInterface
         $logLine = "[$timestamp] [$level] {$this->interpolate($message, $context)}\n";
 
         error_log($logLine, 3, $this->logFilePath);
-
     }
 
     public function interpolate($message, array $context = array()): string

@@ -8,8 +8,9 @@ use Inn\App\Routing\Router;
 use Inn\App\Routing\RouteRegistrar;
 use Inn\App\Container\Container;
 use Inn\App\Routing\RequestHandler;
-use Dotenv\Dotenv;
 use Inn\App\Logger\Logger;
+use Dotenv\Dotenv;
+use Nyholm\Psr7\Request;
 
 $dotenv = Dotenv::createImmutable(__DIR__);
 $dotenv->load();
@@ -25,9 +26,15 @@ try {
 
     $registrar->registerControllers();
 
-    $handler->handleRequest();
+    $method = $_SERVER['REQUEST_METHOD'] ?? 'GET';
+    $uri = $_SERVER['REQUEST_URI'] ?? '/';
+
+    $request = new Request($method, $uri);
+
+    $response = $handler->handleRequest($request);
+
+    echo $response->getBody();
 } catch (Exception $e) {
-    echo "Error while building container: " . $e->getMessage() . "\n";
-    echo "in file: " . $e->getFile() . "\n";
-    echo "on line: " . $e->getLine() . "\n";
+    echo "Error while building container: " . $e->getMessage() . " in file: " . $e->getFile() . " on line: " . $e->getLine() . "\n";
 }
+

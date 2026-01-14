@@ -2,22 +2,41 @@
 
 namespace Inn\App\Routing;
 
+use Inn\App\Container\Container;
+use Nyholm\Psr7\Response;
+use Psr\Http\Message\RequestInterface;
+use Psr\Http\Message\ResponseInterface;
+use ReflectionException;
+
 class RequestHandler
 {
     private Router $router;
+    private Container $container;
 
-    public function __construct(Router $router)
+    public function __construct(Router $router, Container $container)
     {
         $this->router = $router;
+        $this->container = $container;
     }
 
-    public function handleRequest(): void
+    /**
+     * @throws ReflectionException
+     */
+    public function handleRequest(RequestInterface $request): ResponseInterface
     {
-        $uri = parse_url($_SERVER['REQUEST_URI'])['path'];
-        $method = $_SERVER['REQUEST_METHOD'];
+        $uri = $request->getUri()->getPath();
+        $method = $request->getMethod();
 
-        $response = $this->router->route($uri, $method);
+        $routeInfo = $this->router->route($uri, $method);
 
-        echo $response;
+        if (!$routeInfo) {
+            return new Response(404, [], 'Not Found');
+        }
+
+        [$controllerClass, $methodName] = $routeInfo;
+
+        $controller = $this->container->get($controllerClass);
+
+        return $controller->$methodName($request);
     }
 }

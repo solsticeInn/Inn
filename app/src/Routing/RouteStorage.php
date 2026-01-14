@@ -13,18 +13,8 @@ class RouteStorage
         $this->routes[$method][$uri] = $controller;
     }
 
-    public function getRoute(string $uri, string $method): string|null
+    public function getRoute(string $uri, string $method): ?array
     {
-        $controller = $this->routes[$method][$uri] ?? null;
-
-        if (is_array($controller)) {
-            [$controllerName, $controllerMethod] = $controller;
-
-            $controllerObject = new $controllerName();
-
-            return $controllerObject->$controllerMethod();
-        }
-
-        return null;
+        return $this->routes[$method][$uri] ?? null;
     }
 }

@@ -50,15 +50,9 @@ class Router
         $this->add($uri, $controller, 'DELETE');
     }
 
-    public function route(string $uri, string $method): string
+    public function route(string $uri, string $method): ?array
     {
-        $controller = $this->route->getRoute($uri, $method);
-
-        if (!$controller) {
-            $this->abort();
-        }
-
-        return $controller;
+        return $this->route->getRoute($uri, $method);
     }
 
     protected function abort($code = 404): void

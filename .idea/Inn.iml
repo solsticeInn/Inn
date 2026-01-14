@@ -17,6 +17,10 @@
       <excludeFolder url="file://$MODULE_DIR$/app/vendor/symfony/polyfill-php80" />
       <excludeFolder url="file://$MODULE_DIR$/app/vendor/vlucas/phpdotenv" />
       <excludeFolder url="file://$MODULE_DIR$/app/vendor/psr/log" />
+      <excludeFolder url="file://$MODULE_DIR$/app/vendor/phpstan/phpstan" />
+      <excludeFolder url="file://$MODULE_DIR$/app/vendor/nyholm/psr7" />
+      <excludeFolder url="file://$MODULE_DIR$/app/vendor/psr/http-factory" />
+      <excludeFolder url="file://$MODULE_DIR$/app/vendor/psr/http-message" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />

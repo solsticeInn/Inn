@@ -4,16 +4,21 @@ namespace Inn\App\Routing;
 
 use ReflectionClass;
 use Inn\App\Attributes\Route;
+use ReflectionException;
 
 class RouteRegistrar
 {
     protected Router $router;
     protected array $controllers = [];
+
     public function __construct(Router $router)
     {
         $this->router = $router;
     }
 
+    /**
+     * @throws ReflectionException
+     */
     public function registerControllers(): void
     {
         $this->prepareFolderScanning();
@@ -58,6 +63,9 @@ class RouteRegistrar
         }
     }
 
+    /**
+     * @throws ReflectionException
+     */
     protected function registerController(string $controller): void
     {
         $reflection = new ReflectionClass($controller);

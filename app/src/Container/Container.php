@@ -6,6 +6,7 @@ namespace Inn\App\Container;
 
 use Exception;
 use ReflectionClass;
+use ReflectionException;
 use ReflectionNamedType;
 use ReflectionType;
 use Inn\App\Attributes\Env;
@@ -14,7 +15,12 @@ class Container
 {
     protected array $instances = [];
     protected array $parameters = [];
+    protected array $bindings = [];
 
+    /**
+     * @throws ReflectionException
+     * @throws Exception
+     */
     public function get(string $className): object
     {
         if ($this->has($className)) {
@@ -25,7 +31,15 @@ class Container
             throw new Exception("Class $className is not defined.");
         }
 
-        $reflector = new ReflectionClass($className);
+        $dependencyReflector = new ReflectionClass($className);
+
+        if ($dependencyReflector->isInterface()) {
+            $class = $this->bindings[$className];
+            $reflector = new ReflectionClass($class);
+        } else {
+            $reflector = new ReflectionClass($className);
+        }
+
         $constructor = $reflector->getConstructor();
 
         if (!$constructor || $constructor->getNumberOfParameters() === 0) {
@@ -47,7 +61,7 @@ class Container
 
                 $envValue =  $_ENV[$envInstance->key] ?? getenv($envInstance->key);
 
-                if ($envValue !== false && isset($envValue)) {
+                if ($envValue !== false) {
                     $dependencies[] = $this->castType($envValue, $parameterType);
                 } else {
                     $dependencies[] = $this->castType($envInstance->default, $parameterType);
@@ -116,5 +130,10 @@ class Container
             'string' => (string) $value,
             default => $value,
         };
+    }
+
+    public function bind(string $interface, string $implementation): void
+    {
+        $this->bindings[$interface] = $implementation;
     }
 }
