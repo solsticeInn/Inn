@@ -1,7 +1,10 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Inn\App\Logger;
 
+use Inn\App\Attributes\Env;
 use Psr\Log\LoggerInterface;
 use Psr\Log\LogLevel;
 use Psr\Log\InvalidArgumentException;
@@ -10,7 +13,7 @@ use ReflectionClass;
 class Logger implements LoggerInterface
 {
     public function __construct(
-        private readonly string $logFilePath = '/var/www/html/src/Logger/app.log'
+        #[Env('LOG_FILE_PATH', default: "/var/www/html/src/Logger/app.log")] private readonly string $logFilePath
     ){
         $dirName = dirname($this->logFilePath);
 

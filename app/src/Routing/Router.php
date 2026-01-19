@@ -54,11 +54,4 @@ class Router
     {
         return $this->route->getRoute($uri, $method);
     }
-
-    protected function abort($code = 404): void
-    {
-        http_response_code($code);
-
-        die();
-    }
 }

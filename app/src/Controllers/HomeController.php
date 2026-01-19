@@ -12,7 +12,7 @@ class HomeController
     #[Route(path: "/", method: "GET")]
     public function index(RequestInterface $request): ResponseInterface
     {
-        return new Response(200, [], "Welcome! It's a home page.");
+        return new Response(200, [], "Welcome! It is a home page.");
     }
 
     #[Route(path: "/about", method: "GET")]

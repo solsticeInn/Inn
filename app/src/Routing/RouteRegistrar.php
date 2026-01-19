@@ -68,7 +68,8 @@ class RouteRegistrar
      */
     protected function registerController(string $controller): void
     {
-        $reflection = new ReflectionClass($controller);
+        $className = new $controller;
+        $reflection = new ReflectionClass($className::class);
 
         foreach ($reflection->getMethods() as $method) {
             $attributes = $method->getAttributes(Route::class);

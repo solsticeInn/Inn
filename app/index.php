@@ -18,7 +18,7 @@ $dotenv->load();
 $container = new Container();
 
 try {
-    $logger = new Logger();
+    $logger = $container->get(Logger::class);
 
     $router = $container->get(Router::class);
     $registrar = $container->get(RouteRegistrar::class);
@@ -37,4 +37,3 @@ try {
 } catch (Exception $e) {
     echo "Error while building container: " . $e->getMessage() . " in file: " . $e->getFile() . " on line: " . $e->getLine() . "\n";
 }
-

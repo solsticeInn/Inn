@@ -92,6 +92,10 @@ class Container
         $this->instances[$className] = $object;
 
         foreach ($reflector->getProperties() as $property) {
+            if ($property->isPromoted()) {
+                continue;
+            }
+
             $envAttributes = $property->getAttributes(Env::class);
 
             if (!empty($envAttributes)) {
@@ -99,7 +103,7 @@ class Container
 
                 $envValue =  $_ENV[$envInstance->key] ?? getenv($envInstance->key);
 
-                if ($envValue === false || $envValue === null) {
+                if ($envValue === false) {
                     $envValue = $envInstance->default;
                 }
 
